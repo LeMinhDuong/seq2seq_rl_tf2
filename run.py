@@ -1,15 +1,28 @@
-from absl import app
-from absl import flags
+import argparse
 
-FLAGS = flags.FLAGS
+parser = argparse.ArgumentParser(description='Example with long option names')
 
-class Seq2Seq(object):
-    def main(self, unused_argv):
-        print(unused_argv)
+# Where to find data
+parser.add_argument('--data_path', default=None)
+parser.add_argument('--vocab_path', default=None)
 
-def main(argv):
-  seq2seq = Seq2Seq()
-  seq2seq.main(argv)
+# Important settings
+parser.add_argument('--mode', default='train',  choices=['train', 'eval', 'decode'])
+parser.add_argument('--single_pass', default=False)
+parser.add_argument('--decode_after', default=0)
+parser.add_argument('--decode_from', default='train')
 
-if __name__ == '__main__':
-  app.run(main)
+# Where to save output
+parser.add_argument('--log_root', default='')
+parser.add_argument('--exp_name', default='')
+
+# batcher parameter, for consistent results, set all these parameters to 1
+parser.add_argument('--example_queue_threads', default=4)
+parser.add_argument('--batch_queue_threads', default=2)
+parser.add_argument('--bucketing_cache_size', default=100)
+
+print(parser.parse_args())
+
+if __name__ == "__main__":
+    parser.parse_args()
+    #parser.print_help()
